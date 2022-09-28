@@ -3,6 +3,9 @@
         "aculab",
         "COLOURS",
         "lightgray",
+        "rtcselfview",
+        "rtcview",
+        "vidview",
         "webrtc"
     ]
 }
