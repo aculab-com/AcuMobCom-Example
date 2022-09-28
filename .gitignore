@@ -62,3 +62,6 @@ buck-out/
 # Ruby / CocoaPods
 /ios/Pods/
 /vendor/bundle/
+
+# package file
+react-native-aculab-client-1.0.4.tgz
