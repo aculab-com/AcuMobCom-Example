@@ -20,21 +20,25 @@ import { CallButton } from './components/CallButton';
 import { RoundButton } from './components/RoundButton';
 import { useNavigation } from '@react-navigation/native';
 
-const MainCallButtons = (props: any) => {
+interface AcuMobProps {
+  acuMob: AcuMob;
+}
+
+const MainCallButtons = (props: AcuMobProps) => {
   return (
     <View style={styles.callButtonsContainer}>
       <CallButton
         title={'Hang up'}
         colour={COLOURS.RED}
-        onPress={() => props.acuMobCom.stopCall()}
+        onPress={() => props.acuMob.stopCall()}
       />
       <CallButton
         title={'Speaker'}
         colour={COLOURS.SPEAKER_BUTTON}
         onPress={() =>
-          props.acuMobCom.setState(
-            { speakerOn: !props.acuMobCom.state.speakerOn },
-            () => turnOnSpeaker(props.acuMobCom.state.speakerOn),
+          props.acuMob.setState(
+            { speakerOn: !props.acuMob.state.speakerOn },
+            () => turnOnSpeaker(props.acuMob.state.speakerOn),
           )
         }
       />
@@ -42,20 +46,20 @@ const MainCallButtons = (props: any) => {
   );
 };
 
-const DialKeypad = (props: any) => {
+const DialKeypad = (props: AcuMobProps) => {
   return (
     <View style={styles.dialKeypad}>
-      {props.acuMobCom.state.callState === 'calling' ||
-      props.acuMobCom.state.callState === 'ringing' ? (
+      {props.acuMob.state.callState === 'calling' ||
+      props.acuMob.state.callState === 'ringing' ? (
         <View>
           <Text style={styles.callingText}>
-            Calling {props.acuMobCom.state.serviceName}
+            Calling {props.acuMob.state.serviceName}
           </Text>
         </View>
       ) : (
         <View>
           <Text style={styles.callingText}>
-            Service {props.acuMobCom.state.serviceName}
+            Service {props.acuMob.state.serviceName}
           </Text>
         </View>
       )}
@@ -63,57 +67,57 @@ const DialKeypad = (props: any) => {
         <View style={styles.callButtonsContainer}>
           <KeypadButton
             title={'1'}
-            onPress={() => props.acuMobCom.sendDtmf('1')}
+            onPress={() => props.acuMob.sendDtmf('1')}
           />
           <KeypadButton
             title={'2'}
-            onPress={() => props.acuMobCom.sendDtmf('2')}
+            onPress={() => props.acuMob.sendDtmf('2')}
           />
           <KeypadButton
             title={'3'}
-            onPress={() => props.acuMobCom.sendDtmf('3')}
+            onPress={() => props.acuMob.sendDtmf('3')}
           />
         </View>
         <View style={styles.callButtonsContainer}>
           <KeypadButton
             title={'4'}
-            onPress={() => props.acuMobCom.sendDtmf('4')}
+            onPress={() => props.acuMob.sendDtmf('4')}
           />
           <KeypadButton
             title={'5'}
-            onPress={() => props.acuMobCom.sendDtmf('5')}
+            onPress={() => props.acuMob.sendDtmf('5')}
           />
           <KeypadButton
             title={'6'}
-            onPress={() => props.acuMobCom.sendDtmf('6')}
+            onPress={() => props.acuMob.sendDtmf('6')}
           />
         </View>
         <View style={styles.callButtonsContainer}>
           <KeypadButton
             title={'7'}
-            onPress={() => props.acuMobCom.sendDtmf('7')}
+            onPress={() => props.acuMob.sendDtmf('7')}
           />
           <KeypadButton
             title={'8'}
-            onPress={() => props.acuMobCom.sendDtmf('8')}
+            onPress={() => props.acuMob.sendDtmf('8')}
           />
           <KeypadButton
             title={'9'}
-            onPress={() => props.acuMobCom.sendDtmf('9')}
+            onPress={() => props.acuMob.sendDtmf('9')}
           />
         </View>
         <View style={styles.callButtonsContainer}>
           <KeypadButton
             title={'*'}
-            onPress={() => props.acuMobCom.sendDtmf('*')}
+            onPress={() => props.acuMob.sendDtmf('*')}
           />
           <KeypadButton
             title={'0'}
-            onPress={() => props.acuMobCom.sendDtmf('0')}
+            onPress={() => props.acuMob.sendDtmf('0')}
           />
           <KeypadButton
             title={'#'}
-            onPress={() => props.acuMobCom.sendDtmf('#')}
+            onPress={() => props.acuMob.sendDtmf('#')}
           />
         </View>
       </View>
@@ -121,32 +125,32 @@ const DialKeypad = (props: any) => {
   );
 };
 
-const ButtonsIncoming = (props: any) => {
+const ButtonsIncoming = (props: AcuMobProps) => {
   return (
     <View style={styles.callButtonsContainer}>
       <CallButton
         title={'Reject'}
         colour={COLOURS.RED}
-        onPress={() => props.acuMobCom.reject()}
+        onPress={() => props.acuMob.reject()}
       />
       <CallButton
         title={'Accept'}
         colour={COLOURS.GREEN}
-        onPress={() => props.acuMobCom.answer()}
+        onPress={() => props.acuMob.answer()}
       />
     </View>
   );
 };
 
-const ClientCallButtons = (props: any) => {
+const ClientCallButtons = (props: AcuMobProps) => {
   var videoIcon: string = '';
   var audioIcon: string = '';
-  if (!props.acuMobCom.state.camera) {
+  if (!props.acuMob.state.camera) {
     videoIcon = 'eye-off-outline';
   } else {
     videoIcon = 'eye-outline';
   }
-  if (!props.acuMobCom.state.mic) {
+  if (!props.acuMob.state.mic) {
     audioIcon = 'mic-off-outline';
   } else {
     audioIcon = 'mic-outline';
@@ -155,22 +159,21 @@ const ClientCallButtons = (props: any) => {
     <View style={styles.callButtonsContainer}>
       <RoundButton
         iconName={'camera-reverse-outline'}
-        onPress={() => props.acuMobCom.swapCam()}
+        onPress={() => props.acuMob.swapCam()}
       />
       <RoundButton
         iconName={videoIcon}
         onPress={() =>
-          props.acuMobCom.setState(
-            { camera: !props.acuMobCom.state.camera },
-            () => props.acuMobCom.mute(),
+          props.acuMob.setState({ camera: !props.acuMob.state.camera }, () =>
+            props.acuMob.mute(),
           )
         }
       />
       <RoundButton
         iconName={audioIcon}
         onPress={() =>
-          props.acuMobCom.setState({ mic: !props.acuMobCom.state.mic }, () =>
-            props.acuMobCom.mute(),
+          props.acuMob.setState({ mic: !props.acuMob.state.mic }, () =>
+            props.acuMob.mute(),
           )
         }
       />
@@ -178,7 +181,7 @@ const ClientCallButtons = (props: any) => {
   );
 };
 
-const CallOutComponent = (props: any) => {
+const CallOutComponent = (props: AcuMobProps) => {
   return (
     <View style={styles.inputContainer}>
       <View>
@@ -188,16 +191,16 @@ const CallOutComponent = (props: any) => {
           placeholder={'example: --15993377'}
           placeholderTextColor={COLOURS.INPUT_PLACEHOLDER}
           onChangeText={text =>
-            props.acuMobCom.setState({
+            props.acuMob.setState({
               serviceName: deleteSpaces(text),
             })
           }
-          value={props.acuMobCom.state.serviceName}
+          value={props.acuMob.state.serviceName}
           keyboardType={'ascii-capable'}
         />
         <MenuButton
           title={'Call Service'}
-          onPress={() => props.acuMobCom.callService()}
+          onPress={() => props.acuMob.callService()}
         />
       </View>
       <View>
@@ -207,157 +210,168 @@ const CallOutComponent = (props: any) => {
           placeholder={'example: anna123'}
           placeholderTextColor={COLOURS.INPUT_PLACEHOLDER}
           onChangeText={text =>
-            props.acuMobCom.setState({
+            props.acuMob.setState({
               callClientId: deleteSpaces(text),
             })
           }
-          value={props.acuMobCom.state.callClientId}
+          value={props.acuMob.state.callClientId}
         />
         <MenuButton
           title={'Call Client'}
-          onPress={() => props.acuMobCom.callClient()}
+          onPress={() => props.acuMob.callClient()}
         />
       </View>
     </View>
   );
 };
 
-const DisplayClientCall = (props: any) => {
-  if (!props.acuMobCom.state.remoteStream) {
-    if (
-      props.acuMobCom.state.callState === 'calling' ||
-      props.acuMobCom.state.callState === 'ringing' ||
-      props.acuMobCom.state.callState === 'connecting'
-    ) {
-      return (
-        <View style={styles.center}>
-          <Text style={styles.callingText}>
-            Calling {props.acuMobCom.state.callClientId}
-          </Text>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.center}>
-          <Text style={styles.callingText}>
-            {props.acuMobCom.state.callClientId}
-          </Text>
-        </View>
-      );
-    }
-  } else {
-    if (
-      props.acuMobCom.state.localVideoMuted &&
-      !props.acuMobCom.state.remoteVideoMuted
-    ) {
-      return (
-        <View style={styles.vidview}>
-          <RTCView
-            streamURL={props.acuMobCom.state.remoteStream.toURL()}
-            style={styles.rtcview}
-          />
-        </View>
-      );
-    } else if (
-      props.acuMobCom.state.remoteVideoMuted &&
-      !props.acuMobCom.state.localVideoMuted
-    ) {
-      return (
-        <View style={styles.vidview}>
-          <Image
-            source={require('./media/video_placeholder.png')}
-            style={styles.videoPlaceholder}
-          />
-          <View style={styles.videoPlaceholder}>
-            <Text style={styles.basicText}>NO VIDEO</Text>
-          </View>
-          <View style={styles.rtc}>
-            <RTCView
-              streamURL={props.acuMobCom.state.localStream.toURL()}
-              style={styles.rtcselfview}
-            />
-          </View>
-        </View>
-      );
-    } else if (
-      props.acuMobCom.state.remoteVideoMuted &&
-      props.acuMobCom.state.localVideoMuted
-    ) {
-      return (
-        <View>
-          <Image
-            source={require('./media/video_placeholder.png')}
-            style={styles.videoPlaceholder}
-          />
-          <View style={styles.videoPlaceholder}>
-            <Text style={styles.basicText}>NO VIDEO</Text>
-          </View>
-        </View>
-      );
-    } else {
-      return (
-        <View style={styles.vidview}>
-          <RTCView
-            streamURL={props.acuMobCom.state.remoteStream.toURL()}
-            style={styles.rtcview}
-          />
-          <View style={styles.rtc}>
-            <RTCView
-              streamURL={props.acuMobCom.state.localStream.toURL()}
-              style={styles.rtcselfview}
-            />
-          </View>
-        </View>
-      );
-    }
-  }
-};
-
-const CallDisplayHandler = (props: any) => {
-  if (props.acuMobCom.state.callState === 'incoming call') {
+const DisplayClientCall = (props: AcuMobProps) => {
+  if (
+    props.acuMob.state.outboundCall &&
+    props.acuMob.state.callState !== 'connected'
+  ) {
     return (
       <View style={styles.center}>
-        <Text style={styles.callingText}>Incoming Call</Text>
         <Text style={styles.callingText}>
-          {props.acuMobCom.state.incomingCallClientId}
+          Calling {props.acuMob.state.callClientId}
         </Text>
       </View>
     );
-  } else if (props.acuMobCom.state.callState === 'idle') {
+  } else if (
+    props.acuMob.state.inboundCall &&
+    props.acuMob.state.callState !== 'connected'
+  ) {
     return (
-      <ScrollView>
-        <CallOutComponent acuMobCom={props.acuMobCom} />
-      </ScrollView>
+      <View style={styles.center}>
+        <Text style={styles.callingText}>
+          Calling {props.acuMob.state.incomingCallClientId}
+        </Text>
+      </View>
     );
   } else {
-    if (props.acuMobCom.state.callOptions.receiveVideo) {
-      return <DisplayClientCall acuMobCom={props.acuMobCom} />;
+    if (props.acuMob.state.remoteStream && props.acuMob.state.localStream) {
+      switch (true) {
+        case props.acuMob.state.localVideoMuted &&
+          !props.acuMob.state.remoteVideoMuted:
+          return (
+            <View style={styles.vidview}>
+              <RTCView
+                // @ts-ignore
+                streamURL={props.acuMob.state.remoteStream.toURL()}
+                style={styles.rtcview}
+              />
+            </View>
+          );
+        case !props.acuMob.state.localVideoMuted &&
+          props.acuMob.state.remoteVideoMuted:
+          return (
+            <View style={styles.vidview}>
+              <Image
+                source={require('./media/video_placeholder.png')}
+                style={styles.videoPlaceholder}
+              />
+              <View style={styles.videoPlaceholder}>
+                <Text style={styles.basicText}>NO VIDEO</Text>
+              </View>
+              <View style={styles.rtc}>
+                <RTCView
+                  // @ts-ignore
+                  streamURL={props.acuMob.state.localStream.toURL()}
+                  style={styles.rtcselfview}
+                />
+              </View>
+            </View>
+          );
+        case props.acuMob.state.localVideoMuted &&
+          props.acuMob.state.remoteVideoMuted:
+          return (
+            <View>
+              <Image
+                source={require('./media/video_placeholder.png')}
+                style={styles.videoPlaceholder}
+              />
+              <View style={styles.videoPlaceholder}>
+                <Text style={styles.basicText}>NO VIDEO</Text>
+              </View>
+            </View>
+          );
+        default:
+          return (
+            <View style={styles.vidview}>
+              <RTCView
+                // @ts-ignore
+                streamURL={props.acuMob.state.remoteStream.toURL()}
+                style={styles.rtcview}
+              />
+              <View style={styles.rtc}>
+                <RTCView
+                  // @ts-ignore
+                  streamURL={props.acuMob.state.localStream.toURL()}
+                  style={styles.rtcselfview}
+                />
+              </View>
+            </View>
+          );
+      }
     } else {
-      return <DialKeypad acuMobCom={props.acuMobCom} />;
+      return <View />;
     }
   }
 };
 
-const CallButtonsHandler = (props: any) => {
-  if (props.acuMobCom.state.callState === 'incoming call') {
-    //incoming call
-    return <ButtonsIncoming acuMobCom={props.acuMobCom} />;
-  } else if (props.acuMobCom.state.callState !== 'idle') {
-    if (props.acuMobCom.state.callOptions.receiveVideo) {
-      // calling client
-      if (props.acuMobCom.state.remoteStream) {
+const CallDisplayHandler = (props: AcuMobProps) => {
+  switch (props.acuMob.state.calling) {
+    case 'client':
+      return <DisplayClientCall acuMob={props.acuMob} />;
+    case 'service':
+      return <DialKeypad acuMob={props.acuMob} />;
+    default:
+      if (props.acuMob.state.inboundCall) {
+        // incoming call display
         return (
-          <View>
-            <ClientCallButtons acuMobCom={props.acuMobCom} />
-            <MainCallButtons acuMobCom={props.acuMobCom} />
+          <View style={styles.center}>
+            <Text style={styles.callingText}>Incoming Call</Text>
+            <Text style={styles.callingText}>
+              {props.acuMob.state.incomingCallClientId}
+            </Text>
           </View>
         );
       } else {
-        return <MainCallButtons acuMobCom={props.acuMobCom} />;
+        // idle display
+        return (
+          <ScrollView>
+            <CallOutComponent acuMob={props.acuMob} />
+          </ScrollView>
+        );
       }
+  }
+};
+
+const CallButtonsHandler = (props: AcuMobProps) => {
+  if (
+    props.acuMob.state.inboundCall &&
+    props.acuMob.state.callState === 'incoming call'
+  ) {
+    //incoming call
+    return <ButtonsIncoming acuMob={props.acuMob} />;
+  } else if (
+    props.acuMob.state.inboundCall ||
+    props.acuMob.state.outboundCall
+  ) {
+    if (
+      props.acuMob.state.calling === 'client' &&
+      props.acuMob.state.callState === 'connected'
+    ) {
+      // client call connected
+      return (
+        <View>
+          <ClientCallButtons acuMob={props.acuMob} />
+          <MainCallButtons acuMob={props.acuMob} />
+        </View>
+      );
     } else {
-      // calling service
-      return <MainCallButtons acuMobCom={props.acuMobCom} />;
+      // client call not connected or service call
+      return <MainCallButtons acuMob={props.acuMob} />;
     }
   } else {
     // idle state
@@ -416,10 +430,10 @@ class AcuMob extends AcuMobCom {
       <SafeAreaView style={styles.height100}>
         <this.CallHeadComponent />
         <View>
-          <CallDisplayHandler acuMobCom={this} />
+          <CallDisplayHandler acuMob={this} />
         </View>
         <View style={styles.bottom}>
-          <CallButtonsHandler acuMobCom={this} />
+          <CallButtonsHandler acuMob={this} />
         </View>
       </SafeAreaView>
     );
