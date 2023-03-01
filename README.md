@@ -74,7 +74,7 @@ Now you're good to go.
 
 MIT
 
-Copyright (c) 2022 Aculab
+Copyright (c) 2023 Aculab
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
